@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:login_api/Page/SignInPage/signin_page.dart';
-import 'package:login_api/json_list/user_model.dart';
+import 'package:login_api/color.dart';
 import 'package:login_api/json_list/user_view_model.dart';
+import 'package:login_api/models/data_prodi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
@@ -15,21 +16,34 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List dataUser = [];
-    late Timer _timer;
-    
+  late Timer _timer;
+
   void getDataUser() {
     UserViewModel().getUsers().then((value) {
       setState(() {
-          dataUser = value;
+        dataUser = value;
       });
     });
   }
 
-  Widget personDetailCard(UserModel data) {
+  Widget personDetailCard(DataProdi data) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: whiteColor,
+        boxShadow: [
+          BoxShadow(
+            color: shadowColor.withOpacity(0.2),
+            spreadRadius: 5,
+            blurRadius: 40,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Card(
-        color: const Color(0XFF1B2430),
+        color: whiteColor,
+        elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -47,26 +61,24 @@ class _DashboardState extends State<Dashboard> {
                       image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                              'https://i.pravatar.cc/150?u=${data.email}'))),
+                              'https://i.pravatar.cc/150?u=${data.nim}'))),
                 ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    data.name,
+                    data.nama,
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    data.username,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    data.nim,
+                    style: const TextStyle(fontSize: 12),
                   ),
                   Text(
-                    data.email,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    data.prodi,
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ],
               )
@@ -84,15 +96,13 @@ class _DashboardState extends State<Dashboard> {
     getDataUser();
   }
 
-  showDetailDialog(UserModel data) {
+  showDetailDialog(DataProdi data) {
     showDialog(
         context: context,
         builder: (context) {
           return SimpleDialog(
-            backgroundColor: const Color(0XFF05050b),
-            title: const Text('Detail Person',
-                style: TextStyle(color: Colors.white),
-                textAlign: TextAlign.center),
+            backgroundColor: whiteColor,
+            title: const Text('Detail Person', textAlign: TextAlign.center),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -103,27 +113,33 @@ class _DashboardState extends State<Dashboard> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                           image: NetworkImage(
-                              'https://i.pravatar.cc/150?u=${data.email}'))),
+                              'https://i.pravatar.cc/150?u=${data.nim}'))),
                 ),
               ),
-              Text(data.name,
+              Text(data.nama,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold)),
-              Text(data.email,
+                      fontSize: 20, fontWeight: FontWeight.bold)),
+              Text(data.nim,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white, fontSize: 12)),
+                  style: const TextStyle(fontSize: 12)),
               const SizedBox(height: 10),
               Column(
                 children: [
-                  Text("Username : ${data.username}",
-                      style:
-                          const TextStyle(color: Colors.white, fontSize: 12)),
-                  Text("Website : ${data.website}",
-                      style:
-                          const TextStyle(color: Colors.white, fontSize: 12)),
+                  Text("Prodi : ${data.prodi}",
+                      style: const TextStyle(fontSize: 12)),
+                  Text("Agama : ${data.agama}",
+                      style: const TextStyle(fontSize: 12)),
+                  // Text("Tempat, Tanggal Lahir : ${data.tempatLahir}, ${data.tanggalLahir}",
+                  //     style: const TextStyle(fontSize: 12)),
+                  Text("Jenis Kelamin : ${data.jnsKel}",
+                      style: const TextStyle(fontSize: 12)),
+                  // Text("Alamat : ${data.alamat}",
+                  //     style: const TextStyle(fontSize: 12)),
+                  Text("Asal Sekolah : ${data.asalSekolah}",
+                      style: const TextStyle(fontSize: 12)),
+                  Text("Tahun : ${data.tahun}",
+                      style: const TextStyle(fontSize: 12)),
                 ],
               ),
             ],
@@ -169,18 +185,16 @@ class _DashboardState extends State<Dashboard> {
         appBar: AppBar(
           elevation: 0,
           automaticallyImplyLeading: false,
-          title: const Center(
-            child: Text(
-              "List User",
-              style: TextStyle(color: Colors.white, fontSize: 22),
-            ),
+          title: const Text(
+            "List User",
+            style: TextStyle(color: Colors.black, fontSize: 22),
           ),
-          backgroundColor: const Color(0XFF05050b),
+          backgroundColor: whiteColor,
           actions: <Widget>[
             IconButton(
               icon: const Icon(
                 Icons.logout,
-                color: Colors.white,
+                color: secondaryColor,
               ),
               onPressed: () {
                 removeSession();
@@ -194,7 +208,7 @@ class _DashboardState extends State<Dashboard> {
             )
           ],
         ),
-        backgroundColor: const Color(0XFF05050b),
+        backgroundColor: whiteColor,
         body: Center(
           child: ListView.builder(
             itemBuilder: (context, i) {
