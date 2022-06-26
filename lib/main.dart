@@ -59,9 +59,9 @@ class _CheckLoginState extends State<CheckLogin> {
   Widget build(BuildContext context) {
     Widget child;
     if(isLogin) {
-      child = const SignInPage();
-    } else {
       child = const Dashboard();
+    } else {
+      child = const SignInPage();
     }
 
     return Scaffold(

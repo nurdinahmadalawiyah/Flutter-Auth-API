@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:login_api/Components/dialog_logout.dart';
 import 'package:login_api/Page/SignInPage/signin_page.dart';
 import 'package:login_api/color.dart';
 import 'package:login_api/json_list/user_view_model.dart';
@@ -29,7 +30,7 @@ class _DashboardState extends State<Dashboard> {
   Widget personDetailCard(DataProdi data) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            decoration: BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: whiteColor,
         boxShadow: [
@@ -173,12 +174,6 @@ class _DashboardState extends State<Dashboard> {
         });
   }
 
-  void removeSession() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.remove('is_login');
-    await pref.remove('username');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,12 +192,9 @@ class _DashboardState extends State<Dashboard> {
                 color: secondaryColor,
               ),
               onPressed: () {
-                removeSession();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => const SignInPage(),
-                  ),
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => const DialogLogout(),
                 );
               },
             )
