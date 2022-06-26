@@ -107,26 +107,6 @@ class _SignInPageState extends State<SignInPage> {
     await pref.remove('username');
   }
 
-  void ceckLogin() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var islogin = pref.getBool("is_login");
-    if (islogin != null && islogin) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => const Dashboard(),
-        ),
-      );
-    }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    ceckLogin();
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
